@@ -1,0 +1,23 @@
+---
+version: "2.1"
+services:
+  jackett:
+    image: ghcr.io/linuxserver/jackett
+    container_name: jackett
+    networks: 
+      - swagnet
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - AUTO_UPDATE=true #optional
+      #- RUN_OPTS=<run options here> #optional
+    volumes:
+      - /home/max/docker-containers-conf/jackett/config:/config
+      - /home/max/docker-containers-conf/jackett/blackhole:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true

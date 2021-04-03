@@ -1,0 +1,39 @@
+---
+version: "2.1"
+services:
+  nextcloud:
+    image: ghcr.io/linuxserver/nextcloud
+    container_name: nextcloud
+    networks: 
+      - swagnet
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - /home/max/docker-containers-conf/nextcloud:/config
+      - /export/raid5/nextcloud:/data
+    ports:
+      - 444:443
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+  mariadb:
+    image: ghcr.io/linuxserver/mariadb
+    container_name: mariadb
+    networks: 
+      - swagnet
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - FILE__MYSQL_ROOT_PASSWORD=/config/secrets/mariadbpasswd
+      - TZ=Europe/Paris
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=ncuser
+      - FILE__MYSQL_PASSWORD=/config/secrets/mariadbpasswd
+    volumes:
+      - /home/max/docker-containers-conf/mariadb:/config
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true

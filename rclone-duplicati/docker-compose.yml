@@ -1,0 +1,77 @@
+---
+version: "2.1"
+services:
+  rclone-mount-union:
+    image: rclone/rclone
+    container_name: rclone-mount-union
+    networks: 
+      - swagnet
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Paris
+    command:
+      - "--config"
+      - "/config/rclone.conf"
+      - "mount"
+      - "gdrive_union:"
+      - "/mntrclone/rclone/"
+    volumes:
+      - /home/max/docker-containers-conf/rclone:/config
+      - /mnt:/mntrclone:shared
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    restart: unless-stopped
+  rclone-mount-crypt:
+    image: rclone/rclone
+    container_name: rclone-mount-crypt
+    networks: 
+      - swagnet
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Paris
+    command:
+      - "--config"
+      - "/config/rclone.conf"
+      - "mount"
+      - "gdrive_tmp_encrypted:"
+      - "/mntrclone/rclone-crypt/"
+    volumes:
+      - /home/max/docker-containers-conf/rclone:/config
+      - /mnt:/mntrclone:shared
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    restart: unless-stopped
+  duplicati:
+    image: ghcr.io/linuxserver/duplicati
+    container_name: duplicati
+    networks: 
+      - swagnet
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Paris
+      # - CLI_ARGS= #optional
+    volumes:
+      - /home/max/docker-containers-conf/duplicati:/config
+      - /mnt:/mntrclone:shared
+      - /home/max:/src-home
+      - /export/raid5/nextcloud:/src-nextcloud
+      - /export/raid5/backup:/src-backup
+    ports:
+      - 8200:8200
+    depends_on:
+      - rclone-mount-union
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true

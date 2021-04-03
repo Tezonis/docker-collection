@@ -1,0 +1,21 @@
+---
+version: "2.1"
+services:
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    networks: 
+      - swagnet
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - /home/max/docker-containers-conf/sonarr:/config
+      - /export/raid5/seedbox/downloaded:/downloaded
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true

@@ -1,0 +1,21 @@
+---
+version: "2.1"
+services:
+  bazarr:
+    image: ghcr.io/linuxserver/bazarr
+    container_name: bazarr
+    networks: 
+      - swagnet
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - /home/max/docker-containers-conf/bazarr:/config
+      - /export/raid5/seedbox/downloaded:/downloaded
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true

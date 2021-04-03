@@ -1,0 +1,31 @@
+---
+version: "2.1"
+services:
+  rclone-web:
+    image: rclone/rclone
+    container_name: rclone-web
+    networks: 
+      - swagnet
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Paris
+    command:
+      - "--config"
+      - "/config/rclone.conf"
+      - "rcd"
+      - "--rc-web-gui"
+      - "--rc-htpasswd"
+      - "/nginx-htpasswd/.htpasswd"
+      - "--rc-addr"
+      - ":5572"
+      - "--rc-web-gui-no-open-browser"
+    volumes:
+      - /home/max/docker-containers-conf/rclone:/config
+      - /home/max/docker-containers-conf/swag/nginx:/nginx-htpasswd
+    ports:
+      - 5572:5572
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true

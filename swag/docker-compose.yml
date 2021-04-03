@@ -1,0 +1,26 @@
+---
+version: "2.1"
+services:
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    networks: 
+      - swagnet
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - URL=tezonis.duckdns.org
+      - SUBDOMAINS=wildcard
+      - VALIDATION=duckdns
+      - FILE__DUCKDNSTOKEN=/config/secrets/duckdnstoken
+    volumes:
+      - /home/max/docker-containers-conf/swag:/config
+    ports:
+      - 443:443
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true

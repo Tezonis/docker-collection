@@ -1,0 +1,18 @@
+---
+version: "2.1"
+services:
+  heimdall:
+    image: ghcr.io/linuxserver/heimdall
+    container_name: heimdall
+    networks: 
+      - swagnet
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - /home/max/docker-containers-conf/heimdall:/config
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true
