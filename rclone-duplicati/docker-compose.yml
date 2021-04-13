@@ -18,8 +18,10 @@ services:
       - "--config"
       - "/config/rclone.conf"
       - "mount"
-      - "gdrive_union:"
+      - "mega_union:"
       - "/mntrclone/rclone/"
+      - "--vfs-cache-mode"
+      - "writes"
     volumes:
       - /home/max/docker-containers-conf/rclone:/config
       - /mnt:/mntrclone:shared
@@ -43,7 +45,7 @@ services:
       - "--config"
       - "/config/rclone.conf"
       - "mount"
-      - "gdrive_tmp_encrypted:"
+      - "mega_tmp_encrypted:"
       - "/mntrclone/rclone-crypt/"
     volumes:
       - /home/max/docker-containers-conf/rclone:/config

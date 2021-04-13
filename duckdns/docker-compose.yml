@@ -1,0 +1,21 @@
+---
+version: "2.1"
+services:
+  duckdns:
+    image: ghcr.io/linuxserver/duckdns
+    container_name: duckdns
+    networks: 
+      - swagnet
+    environment:
+      - PUID=1000 #optional
+      - PGID=1000 #optional
+      - TZ=Europe/Paris
+      - SUBDOMAINS=tezonis,tezo,nakt
+      - FILE__TOKEN=/config/secrets/duckdnstoken
+      - LOG_FILE=true #optional
+    volumes:
+      - /home/max/docker-containers-conf/duckdns:/config #optional
+    restart: unless-stopped
+networks:
+  swagnet:
+    external: true

@@ -1,20 +1,20 @@
 ---
 version: "2.1"
 services:
-  radarr:
-    image: ghcr.io/linuxserver/radarr
-    container_name: radarr
+  gotify:
+    image: gotify/server-arm7
+    container_name: gotify
     networks: 
       - swagnet
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
+      # - GOTIFY_DEFAULTUSER_PASS=custom
     volumes:
-      - /home/max/docker-containers-conf/radarr:/config
-      - /export/raid5/seedbox/downloaded:/downloaded
+      - /home/max/docker-containers-conf/gotify:/app/data
     ports:
-      - 7878:7878
+      - 8081:80
     restart: unless-stopped
 networks:
   swagnet:

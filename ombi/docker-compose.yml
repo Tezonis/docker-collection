@@ -1,20 +1,20 @@
 ---
 version: "2.1"
 services:
-  radarr:
-    image: ghcr.io/linuxserver/radarr
-    container_name: radarr
+  ombi:
+    image: ghcr.io/linuxserver/ombi
+    container_name: ombi
     networks: 
       - swagnet
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
+      # - BASE_URL=/ombi #optional
     volumes:
-      - /home/max/docker-containers-conf/radarr:/config
-      - /export/raid5/seedbox/downloaded:/downloaded
+      - /home/max/docker-containers-conf/ombi:/config
     ports:
-      - 7878:7878
+      - 3579:3579
     restart: unless-stopped
 networks:
   swagnet:
